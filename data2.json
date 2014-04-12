@@ -1,47 +1,47 @@
 var mapLocations = [
 	{
-		name: 'Forn Baluard',
-		lat: 41.380003,
-		lon: 2.189012
+		"name": 'Forn Baluard',
+		"latitude": 41.380003,
+		"longitude": 2.189012
 	},
 	{
-		name: 'Picasso Museum',
-		lat: 41.387097,
-		lon: 2.180893
+		"name": 'Picasso Museum',
+		"latitude": 41.387097,
+		"longitude": 2.180893
 	},
 	{
-		name: 'Picasso Museum',
-		lat: 41.382218,
-		lon: 2.171752
+		"name": 'Picasso Museum',
+		"latitude": 41.382218,
+		"longitude": 2.171752
 	},
 	{
-		name: 'La Boqueria',
-		lat: 41.383716,
-		lon: 2.170572
+		"name": 'La Boqueria',
+		"latitude": 41.383716,
+		"longitude": 2.170572
 	},
 	{
-		name: 'Fundació Antoni Tàpies',
-		lat: 41.392023,
-		lon: 2.163792
+		"name": 'Fundació Antoni Tàpies',
+		"latitude": 41.392023,
+		"longitude": 2.163792
 	},
 	{
-		name: 'Cafe Godot',
-		lat: 41.401021,
-		lon: 2.160358
+		"name": 'Cafe Godot',
+		"latitude": 41.401021,
+		"longitude": 2.160358
 	},
 	{
-		name: 'Park Güell',
-		lat: 41.414974,
-		lon: 2.152698
+		"name": 'Park Güell',
+		"latitude": 41.414974,
+		"longitude": 2.152698
 	},
 	{
-		name: 'Pl de la Virreina',
-		lat: 41.40469,
-		lon: 2.157269
+		"name": 'Pl de la Virreina',
+		"latitude": 41.40469,
+		"longitude": 2.157269
 	},
 	{
-		name: 'Taverna El Glop',
-		lat: 41.405382,
-		lon: 2.159543
+		"name": 'Taverna El Glop',
+		"latitude": 41.405382,
+		"longitude": 2.159543
 	},
 ];

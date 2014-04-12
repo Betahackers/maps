@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 	<script src="http://maps.google.com/maps/api/js?sensor=true"></script>
-	<script src="data2.json"></script>
+	<script src="data3.json"></script>
 </head>
 <body>
 <div id="map" style="width: 800px; height: 400px;">
@@ -125,79 +125,94 @@ $(document).ready(function(){
 	]);
 
 	var infowindow = new google.maps.InfoWindow();
-	var bounds = new google.maps.LatLngBounds();
 
-	var positions = [];
+	// var articles = articles.article;
+	for (var i = 0; i < articles[0].article.length; i++) {
+		var article = articles[0].article[i];
+		drawItinary(article);
+	}
 
-	for (var i = 0; i < mapLocations.length; i++) {
+	function drawItinary(article){
 
-		var mapLocation = mapLocations[i];
-		// console.log(mapLocation);
+		var mapLocations = article.locations;
 
-		mapLocation.html = '';
-		mapLocation.html += '<b>' + mapLocation.title + '</b><br>';
-		if (mapLocation.title) {
-			mapLocation.html += mapLocation.title + '<br>';
+		if(mapLocations.length == 0){
+			return;
 		}
 
-		var pos = new google.maps.LatLng(mapLocation.lat, mapLocation.lon);
-		var props = {
-			position: pos,
-			map: map
-		};
-		positions.push(pos);
-		// console.log(mapLocation);
+		var bounds = new google.maps.LatLngBounds();
 
-		/*
-		var pinColor = mapLocation.color;
-		var iconUrl = "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=" + mapLocation.num;
-		if (mapLocation.color){
-			iconUrl += "|" + pinColor;
-		}
-		props.icon = new google.maps.MarkerImage(iconUrl,
-			new google.maps.Size(21, 34),
-			new google.maps.Point(0,0),
-			new google.maps.Point(10, 34));
-		props.shadow = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
-			new google.maps.Size(40, 37),
-			new google.maps.Point(0, 0),
-			new google.maps.Point(12, 35));
-		*/
+		var positions = [];
 
-		mapLocation.marker = new google.maps.Marker(props);
-		google.maps.event.addListener(mapLocation.marker, 'click', (function(marker, i) {
-			return function() {
-				showMapLocation(marker, i);
-				// infowindow.setContent(mapLocation.html);
-				// infowindow.open(map, marker);
+		for (var i = 0; i < mapLocations.length; i++) {
+
+			var mapLocation = mapLocations[i];
+			// console.log(mapLocation);
+
+			mapLocation.html = '';
+			mapLocation.html += '<b>' + mapLocation.name + '</b><br>';
+			mapLocation.html += 'Itinary: ' + article.title + '<br>';
+
+			var pos = new google.maps.LatLng(mapLocation.latitude, mapLocation.longitude);
+			var props = {
+				position: pos,
+				map: map
 			};
-		})(mapLocation.marker, i));
+			positions.push(pos);
+			// console.log(mapLocation);
 
-		bounds.extend(mapLocation.marker.position);
+			/*
+			var pinColor = mapLocation.color;
+			var iconUrl = "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=" + mapLocation.num;
+			if (mapLocation.color){
+				iconUrl += "|" + pinColor;
+			}
+			props.icon = new google.maps.MarkerImage(iconUrl,
+				new google.maps.Size(21, 34),
+				new google.maps.Point(0,0),
+				new google.maps.Point(10, 34));
+			props.shadow = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
+				new google.maps.Size(40, 37),
+				new google.maps.Point(0, 0),
+				new google.maps.Point(12, 35));
+			*/
+
+			mapLocation.marker = new google.maps.Marker(props);
+			google.maps.event.addListener(mapLocation.marker, 'click', (function(marker, i) {
+				return function() {
+					showMapLocation(marker, i);
+					// infowindow.setContent(mapLocation.html);
+					// infowindow.open(map, marker);
+				};
+			})(mapLocation.marker, i));
+
+			bounds.extend(mapLocation.marker.position);
+
+		}
+
+		if (mapLocations.length > 0) {
+			map.fitBounds(bounds);
+		}
+
+		var path = new google.maps.Polyline({
+			path: positions,
+			geodesic: true,
+			strokeColor: '#FF0000',
+			strokeOpacity: 1.0,
+			strokeWeight: 2
+		});
+		path.setMap(map);
+
+		drawItinaryLines(positions);
+
+		function showMapLocation(marker, i){
+			infowindow.setContent(mapLocations[i].html);
+			infowindow.open(map, marker);
+		}
 
 	}
 
-	if (mapLocations.length > 0) {
-		map.fitBounds(bounds);
-	}
-
-	var path = new google.maps.Polyline({
-		path: positions,
-		geodesic: true,
-		strokeColor: '#FF0000',
-		strokeOpacity: 1.0,
-		strokeWeight: 2
-	});
-
-	path.setMap(map);
-	drawItinary(positions);
-
-	function showMapLocation(marker, i){
-		infowindow.setContent(mapLocations[i].html);
-		infowindow.open(map, marker);
-	}
-
-	function drawItinary (positions) {
+	function drawItinaryLines (positions) {
 
 		var newPositions = [];
 
@@ -231,9 +246,6 @@ $(document).ready(function(){
 			// 	newPositions.push(next);
 			// }
 		};
-
-		console.log(positions[0].lng);
-		console.log(newPositions[0].lat());
 
 		var path = new google.maps.Polyline({
 			path: newPositions,
