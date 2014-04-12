@@ -93,7 +93,7 @@ $(document).ready(function(){
 	});
 
 	path.setMap(map);
-	drawItinary(positions);
+	// drawItinary(positions);
 
 	function showMapLocation(marker, i){
 		infowindow.setContent(mapLocations[i].html);
@@ -108,22 +108,25 @@ $(document).ready(function(){
 			var current = positions[i];
 			var next = positions[i+1];
 			
-			var midLng = ( current.lng + next.lng ) / 2;
+			var midLng = ( current.lng() + next.lng() ) / 2;
 
-			if( midLng != current.lng && midLng != next.lng ) {
+			if( midLng != current.lng() && midLng != next.lng() ) {
 				newPositions.push(current);
-				newPositions.push(new google.maps.LatLng(current.lat, midLng));
-				newPositions.push(new google.maps.LatLng(next.lat, midLng));
+				newPositions.push(new google.maps.LatLng(current.lat(), midLng));
+				newPositions.push(new google.maps.LatLng(next.lat(), midLng));
 				newPositions.push(next);
 			}
 		};
+
+		console.log(positions[0].lng);
+		console.log(newPositions[0].lat());
 
 		var path = new google.maps.Polyline({
 			path: newPositions,
 			geodesic: true,
 			strokeColor: '#00FF00',
 			strokeOpacity: 1.0,
-			strokeWeight: 5
+			strokeWeight: 2
 		});
 
 		path.setMap(map);
