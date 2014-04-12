@@ -143,7 +143,13 @@ $(document).ready(function(){
 		var pos = new google.maps.LatLng(mapLocation.lat, mapLocation.lon);
 		var props = {
 			position: pos,
-			map: map
+			map: map,
+			icon: {
+				path: google.maps.SymbolPath.CIRCLE,
+				strokeColor: '#DDD9D5',
+				strokeOpacity: 1,
+				scale: 8
+			}
 		};
 		positions.push(pos);
 		// console.log(mapLocation);
