@@ -156,26 +156,31 @@ $(document).ready(function(){
 			var pos = new google.maps.LatLng(mapLocation.latitude, mapLocation.longitude);
 			var props = {
 				position: pos,
-				map: map
+				map: map,
+				icon: {
+					path: google.maps.SymbolPath.CIRCLE,
+					strokeColor: '#DDD9D5',
+					strokeOpacity: 1,
+					scale: 8
+				}
 			};
 			positions.push(pos);
 			// console.log(mapLocation);
 
-			/*
-			var pinColor = mapLocation.color;
-			var iconUrl = "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=" + mapLocation.num;
-			if (mapLocation.color){
-				iconUrl += "|" + pinColor;
-			}
-			props.icon = new google.maps.MarkerImage(iconUrl,
-				new google.maps.Size(21, 34),
-				new google.maps.Point(0,0),
-				new google.maps.Point(10, 34));
-			props.shadow = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
-				new google.maps.Size(40, 37),
-				new google.maps.Point(0, 0),
-				new google.maps.Point(12, 35));
-			*/
+			
+			// var pinColor = mapLocation.color;
+			// var iconUrl = "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=" + mapLocation.num;
+			// if (mapLocation.color){
+			// 	iconUrl += "|" + pinColor;
+			// }
+			// props.icon = new google.maps.MarkerImage(iconUrl,
+			// 	new google.maps.Size(21, 34),
+			// 	new google.maps.Point(0,0),
+			// 	new google.maps.Point(10, 34));
+			// props.shadow = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
+			// 	new google.maps.Size(40, 37),
+			// 	new google.maps.Point(0, 0),
+			// 	new google.maps.Point(12, 35));
 
 			mapLocation.marker = new google.maps.Marker(props);
 			google.maps.event.addListener(mapLocation.marker, 'click', (function(marker, i) {
@@ -183,8 +188,9 @@ $(document).ready(function(){
 					showMapLocation(marker, i);
 					// infowindow.setContent(mapLocation.html);
 					// infowindow.open(map, marker);
-				};
+				}
 			})(mapLocation.marker, i));
+			// console.log(mapLocation);
 
 			bounds.extend(mapLocation.marker.position);
 
