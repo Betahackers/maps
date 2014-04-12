@@ -18,8 +18,13 @@
 		var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
 		var osm = new L.TileLayer(osmUrl, {minZoom: 12, maxZoom: 18, attribution: osmAttrib});
 
+		var mapBox = L.TileLayer(
+			'http://{s}.tiles.mapbox.com/v3/{user}.{map}/{z}/{x}/{y}.png',
+			{user: 'kkaefer', map: 'island', minZoom: 12, maxZoom: 18, attribution: osmAttrib}
+		);
+
 		var map = L.map('map').setView([41.3833, 2.1833], 12);
-		map.addLayer(osm);
+		map.addLayer(mapBox);
 
 		/*
 		L.marker([51.5, -0.09]).addTo(map)
