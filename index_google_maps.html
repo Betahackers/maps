@@ -20,13 +20,109 @@ $(document).ready(function(){
 		center: new google.maps.LatLng(41.3897, 2.1699),
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
 		mapTypeControl: false,
-	    streetViewControl: false,
-	    styles: [{
-			"stylers": [
-				{ "saturation": -100 }
-			]
-		}]
+	    streetViewControl: false
 	});
+
+	map.set('styles', [
+	{
+		featureType: 'road',
+		elementType: 'labels',
+		stylers: [
+		{ visibility: 'off' }
+		]
+	},
+	{
+		featureType: 'road',
+		elementType: 'geometry',
+		stylers: [
+		{ color: "#FFFFFF" }
+		]
+	},
+	{
+		featureType: 'road.highway',
+		elementType: 'geometry',
+		stylers: [
+		{ color: "#FFFFFF" },
+		{saturation: -100}
+		]
+	},
+	{
+		featureType: 'road.arterial',
+		elementType: 'geometry',
+		stylers: [
+		{ color: "#FFFFFF" },
+		{saturation: -100},
+		{lightness: 30},
+		]
+	},
+	{
+		featureType: "road.local",
+		stylers: [
+			{saturation: -100},
+			{lightness: 40},
+		]
+	},
+	{
+		featureType: 'transit',
+		elementType: 'geometry',
+		stylers: [
+		{ visibility: 'off' }
+		]
+	},
+	{
+		featureType: 'transit',
+		elementType: 'labels',
+		stylers: [
+		{ visibility: 'off' }
+		]
+	},
+	{
+		featureType: 'poi',
+		elementType: 'labels',
+		stylers: [
+		{ visibility: 'off' }
+		]
+	},
+	{
+		featureType: 'poi',
+		elementType: 'geometry',
+		stylers: [
+		{ visibility: 'off' }
+		]
+	},
+	{
+		featureType: "landscape",
+		stylers: [
+			{saturation: -100},
+			{lightness: 65},
+			{visibility: 'on'}
+		]
+	},
+	{
+	featureType: "administrative",
+	elementType: "labels",
+	stylers: [
+		{hue: "#ffff00"},
+		{saturation: -50},
+		{lightness: 60},
+	]
+	},
+	{
+		featureType: "water",
+		elementType: "geometry",
+		stylers: [
+			{hue: "#ffff33"},
+			{saturation: -97}
+		]
+	},
+	{
+		featureType: "water",
+		elementType: "labels",
+		stylers: [
+			{visibility: 'off'}
+		]
+	}
+	]);
 
 	var infowindow = new google.maps.InfoWindow();
 	var bounds = new google.maps.LatLngBounds();
@@ -97,7 +193,7 @@ $(document).ready(function(){
 
 	function showMapLocation(marker, i){
 		infowindow.setContent(mapLocations[i].html);
-		infowindow.open(map, marker);			
+		infowindow.open(map, marker);
 	}
 
 	function drawItinary (positions) {
