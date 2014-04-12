@@ -203,15 +203,32 @@ $(document).ready(function(){
 		for (var i = 0; i < positions.length - 1; i++) {
 			var current = positions[i];
 			var next = positions[i+1];
-			
-			var midLng = ( current.lng() + next.lng() ) / 2;
 
-			if( midLng != current.lng() && midLng != next.lng() ) {
+			//var midLng = ( current.lng() + next.lng() ) / 2;
+
+			var dLng = next.lng() - current.lng();
+			var dLat = next.lat() - current.lat();
+
+			if (Math.abs(dLng) > Math.abs(dLat)) {
 				newPositions.push(current);
-				newPositions.push(new google.maps.LatLng(current.lat(), midLng));
-				newPositions.push(new google.maps.LatLng(next.lat(), midLng));
+				newPositions.push(new google.maps.LatLng(current.lat(), next.lng()-dLat/2));
+				newPositions.push(new google.maps.LatLng(current.lat()+dLat/2, next.lng()));
+				newPositions.push(new google.maps.LatLng(next.lat(), next.lng()));
+				newPositions.push(next);
+			} else {
+				newPositions.push(current);
+				newPositions.push(new google.maps.LatLng(current.lat(), next.lng()-dLng/2));
+				newPositions.push(new google.maps.LatLng(current.lat()+dLat/2, next.lng()));
+				newPositions.push(new google.maps.LatLng(next.lat(), next.lng()));
 				newPositions.push(next);
 			}
+
+			// if( midLng != current.lng() && midLng != next.lng() ) {
+			// 	newPositions.push(current);
+			// 	newPositions.push(new google.maps.LatLng(current.lat(), midLng));
+			// 	newPositions.push(new google.maps.LatLng(next.lat(), midLng));
+			// 	newPositions.push(next);
+			// }
 		};
 
 		console.log(positions[0].lng);
