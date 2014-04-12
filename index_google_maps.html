@@ -4,7 +4,7 @@
 	<title>Betachallenge</title>
 	<meta charset="utf-8">
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-	<script src="http://maps.google.com/maps/api/js?sensor=true"></script>
+	<script src="http://maps.google.com/maps/api/js?libraries=geometry&sensor=true"></script>
 	<script src="data3.json"></script>
 </head>
 <body>
@@ -219,6 +219,9 @@ $(document).ready(function(){
 		for (var i = 0; i < positions.length - 1; i++) {
 			var current = positions[i];
 			var next = positions[i+1];
+
+			var heading = google.maps.geometry.spherical.computeHeading(current, next);
+			console.log(heading % 45);
 
 			//var midLng = ( current.lng() + next.lng() ) / 2;
 
