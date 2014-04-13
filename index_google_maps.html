@@ -155,10 +155,14 @@ $(document).ready(function(){
 	for (var i = 0; i < articles[0].article.length; i++) {
 		var article = articles[0].article[i];
 		drawItinary(article, colors[i]);
+		if (i == 0) {
+			drawTimeline(article.locations);
+		}
+
 	}
 
 	// Draw the timeline in the sidebar
-	drawTimeLine();
+
 
 	function drawItinary(article, color){
 
@@ -238,7 +242,7 @@ $(document).ready(function(){
 
 		google.maps.event.addListener(path, 'click', (function(path) {
 			return function() {
-				console.log(mapLocations)
+				drawTimeline(mapLocations)
 				alert("Hi" + mapLocations[0].name);
 				//showMapLocation(marker, i);
 				// infowindow.setContent(mapLocation.html);
@@ -305,14 +309,10 @@ $(document).ready(function(){
 
 		path.setMap(map);
 
-		google.maps.event.addListener(path, 'click', function() {
-			alert('ok');
-			console.log('Bounds changed.');
-		});
-
 	}
 
-	function drawTimeLine () {
+	function drawTimeline (mapLocations) {
+		console.log(mapLocations);
 		drawMetroLine(25, 200);
 		drawWalkLine(200, 300);
 		drawMetroLine(300, 475);
