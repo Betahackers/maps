@@ -38,11 +38,11 @@ $(document).ready(function(){
 	});
 
 	var colors = new Array();
-	var color_number = 0;
-	colors[0] = "#FF0000";
-	colors[1] = "#00FF00";
-	colors[2] = "#0000FF";
-	colors[3] = "#FFFF00";
+	colors[0] = "#000000";
+	colors[1] = "#FF0000";
+	colors[2] = "#00FF00";
+	colors[3] = "#0000FF";
+	colors[4] = "#FFFF00";
 
 
 	map.set('styles', [
@@ -154,9 +154,9 @@ $(document).ready(function(){
 	var bounds = new google.maps.LatLngBounds();
 	for (var i = 0; i < articles[0].article.length; i++) {
 		var article = articles[0].article[i];
-		drawItinary(article, colors[i]);
+		drawItinary(article, colors[article.id]);
 		if (i == 0) {
-			drawTimeline(article.locations);
+			drawTimeline(article.locations, colors[article.id]);
 		}
 
 	}
@@ -167,6 +167,7 @@ $(document).ready(function(){
 	function drawItinary(article, color){
 
 		var mapLocations = article.locations;
+		console.log(color)
 
 		if(mapLocations.length == 0){
 			return;
@@ -234,16 +235,14 @@ $(document).ready(function(){
 			path: positions,
 			geodesic: true,
 			strokeColor: color,
-			strokeColor: colors[color_number],
 			strokeOpacity: 1.0,
 			strokeWeight: 2
 		});
-		color_number = (color_number + 1) % 4;
 
 		google.maps.event.addListener(path, 'click', (function(path) {
 			return function() {
-				drawTimeline(mapLocations)
-				alert("Hi" + mapLocations[0].name);
+				drawTimeline(mapLocations, color)
+				//alert("Hi" + mapLocations[0].name);
 				//showMapLocation(marker, i);
 				// infowindow.setContent(mapLocation.html);
 				// infowindow.open(map, marker);
@@ -269,10 +268,6 @@ $(document).ready(function(){
 			var current = positions[i];
 			var next = positions[i+1];
 
-			var heading = google.maps.geometry.spherical.computeHeading(current, next);
-			//console.log(heading);
-			//console.log(45 * Math.round(heading / 45));
-
 			var dLng = next.lng() - current.lng();
 			var dLat = next.lat() - current.lat();
 
@@ -289,71 +284,87 @@ $(document).ready(function(){
 				newPositions.push(new google.maps.LatLng(next.lat(), next.lng()));
 				newPositions.push(next);
 			}
-
-			// if( midLng != current.lng() && midLng != next.lng() ) {
-			// 	newPositions.push(current);
-			// 	newPositions.push(new google.maps.LatLng(current.lat(), midLng));
-			// 	newPositions.push(new google.maps.LatLng(next.lat(), midLng));
-			// 	newPositions.push(next);
-			// }
 		};
-
-		path = new google.maps.Polyline({
-			path: newPositions,
-			geodesic: true,
-			//strokeColor: color[2],
-			strokeColor: "#FFFF00",
-			strokeOpacity: 1.0,
-			strokeWeight: 2
-		});
 
 		path.setMap(map);
 
 	}
 
-	function drawTimeline (mapLocations) {
+	function drawTimeline (mapLocations, color) {
 		console.log(mapLocations);
-		drawMetroLine(25, 200);
-		drawWalkLine(200, 300);
-		drawMetroLine(300, 475);
-		drawMetroLine(475, 600);
 
-		drawLocation(25);
-		drawLocation(200);
-		drawLocation(300);
-		drawLocation(475);
-		drawLocation(600);
+		// Remove previous timeline and add new container
+		d3.select("#timeline").remove();
+		d3.select("#sidebar").append("svg").attr("id","timeline");
+
+		// Calculate total travelling time
+		var offset = 25;
+		var xCoord = 15;
+		var yCoord = 25;
+
+		var totalTravelTime = 0;
+		mapLocations.forEach( function( key, val ) {
+			if (key.travel_time) {
+				totalTravelTime = totalTravelTime + key.travel_time;
+			}
+    	} );
+		console.log(totalTravelTime);
+
+		// Draw lines
+		var locationCoordinates = [];
+		locationCoordinates.push(yCoord);
+
+		mapLocations.forEach( function( key, val ) {
+			if (key.travel_time) {
+				var destinationCoordinate = yCoord + key.travel_time / totalTravelTime * (800 - 2*offset);
+				locationCoordinates.push(destinationCoordinate);
+
+				if(key.travel_mode == "walking") {
+					drawWalkLine(xCoord, yCoord, xCoord, destinationCoordinate, color);
+				} else {
+					drawMetroLine(xCoord, yCoord, xCoord, destinationCoordinate, color);
+				}
+				yCoord = destinationCoordinate;
+			}
+
+		} );
+
+		// Draw locations
+		console.log(locationCoordinates);
+		locationCoordinates.forEach( function( key, val ) {
+			drawLocation(xCoord, key, color);
+		} );
 	}
-	function drawLocation (y) {
+	function drawLocation (x, y, color) {
 		d3.select("#timeline")
 			.append("circle")
-			.attr("cx", 25)
+			.attr("cx", x)
 			.attr("cy", y)
 			.attr("r", 10)
 			.attr("stroke", "#EDEDED")
 			.attr("stroke-width", "6")
-			.attr("fill", "red");
+			.attr("fill", color);
 	}
 
-	function drawMetroLine (y1, y2) {
+	function drawMetroLine (x1, y1, x2, y2, color) {
 		d3.select("#timeline")
 			.append("line")
-			.attr("x1", 25)
+			.attr("x1", x1)
 			.attr("y1", y1)
-			.attr("x2", 25)
+			.attr("x2", x2)
 			.attr("y2", y2)
-			.attr("stroke", "red")
+			.attr("stroke", color)
 			.attr("stroke-width", "3");
 	}
 
-	function drawWalkLine (y1, y2) {
+	function drawWalkLine (x1, y1, x2, y2, color) {
 		d3.select("#timeline")
 			.append("line")
-			.attr("x1", 25)
+			.attr("x1", x1)
 			.attr("y1", y1)
-			.attr("x2", 25)
+			.attr("x2", x2)
 			.attr("y2", y2)
-			.attr("stroke", "red")
+			.attr("stroke", color)
 			.attr("stroke-width", "3")
 			.attr("stroke-dasharray","5,5");
 	}
