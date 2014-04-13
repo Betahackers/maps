@@ -339,7 +339,7 @@ $(document).ready(function(){
 					.attr("class", "label")
 					.text(mapLocation.name);
 		group
-			.on("click", function(d) { 
+			.on("click", function(d) {
 				markerClick(this, mapLocation);
 			});
 
@@ -395,13 +395,13 @@ $(document).ready(function(){
 			.append("image")
 			.attr("xlink:href", "walking-man.svg")
 			.attr("x", x1+25)
-			.attr("y", (y1+y2)/2)
+			.attr("y", (y1+y2)/2-8)
 			.attr("width", 20)
 			.attr("height", 20);
 		d3.select("#timeline")
 			.append("text")
 			.attr("x", x1+50)
-			.attr("y", (y1+y2)/2+13)
+			.attr("y", (y1+y2)/2+5)
 			.attr("font-family", "sans-serif")
 			.attr("font-size","12px")
 			.attr("fill", "#888888")
