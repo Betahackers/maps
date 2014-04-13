@@ -5,10 +5,24 @@
 	<meta charset="utf-8">
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 	<script src="http://maps.google.com/maps/api/js?libraries=geometry&sensor=true"></script>
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 	<script src="data3.json"></script>
 </head>
 <body>
-<div id="map" style="width: 800px; height: 800px;">
+<div id="map" style="width: 800px; height: 800px; float:left;"></div>
+<div id="sidebar" style="width: 150px; height: 800px; background-color:#DADAD8; float:left;">
+<svg id="timeline">
+<!-- 	<line x1="25" y1="25" x2="25" y2="200" stroke="red" stroke-width="3" />
+	<line x1="25" y1="200" x2="25" y2="300" stroke="red" stroke-width="3" stroke-dasharray="5,5"/>
+	<line x1="25" y1="300" x2="25" y2="475" stroke="red" stroke-width="3" />
+	<line x1="25" y1="475" x2="25" y2="600" stroke="red" stroke-width="3" />
+
+	<circle cx="25" cy="25" r="10" stroke="#EDEDED" stroke-width="6" fill="red" />
+	<circle cx="25" cy="200" r="10" stroke="#EDEDED" stroke-width="6" fill="red" />
+	<circle cx="25" cy="300" r="10" stroke="#EDEDED" stroke-width="6" fill="red" />
+	<circle cx="25" cy="475" r="10" stroke="#EDEDED" stroke-width="6" fill="red" />
+	<circle cx="25" cy="600" r="10" stroke="#EDEDED" stroke-width="6" fill="red" /> -->
+</svg>
 </div>
 <script>
 $(document).ready(function(){
@@ -143,6 +157,9 @@ $(document).ready(function(){
 		drawItinary(article, colors[i]);
 	}
 
+	// Draw the timeline in the sidebar
+	drawTimeLine();
+
 	function drawItinary(article, color){
 
 		var mapLocations = article.locations;
@@ -218,6 +235,16 @@ $(document).ready(function(){
 			strokeWeight: 2
 		});
 		color_number = (color_number + 1) % 4;
+
+		google.maps.event.addListener(path, 'click', (function(path) {
+			return function() {
+				alert("Hi");
+				//showMapLocation(marker, i);
+				// infowindow.setContent(mapLocation.html);
+				// infowindow.open(map, marker);
+			}
+		})(path));
+
 		path.setMap(map);
 
 		//drawItinaryLines(positions);
@@ -284,6 +311,51 @@ $(document).ready(function(){
 
 	}
 
+	function drawTimeLine () {
+		drawMetroLine(25, 200);
+		drawWalkLine(200, 300);
+		drawMetroLine(300, 475);
+		drawMetroLine(475, 600);
+
+		drawLocation(25);
+		drawLocation(200);
+		drawLocation(300);
+		drawLocation(475);
+		drawLocation(600);
+	}
+	function drawLocation (y) {
+		d3.select("#timeline")
+			.append("circle")
+			.attr("cx", 25)
+			.attr("cy", y)
+			.attr("r", 10)
+			.attr("stroke", "#EDEDED")
+			.attr("stroke-width", "6")
+			.attr("fill", "red");
+	}
+
+	function drawMetroLine (y1, y2) {
+		d3.select("#timeline")
+			.append("line")
+			.attr("x1", 25)
+			.attr("y1", y1)
+			.attr("x2", 25)
+			.attr("y2", y2)
+			.attr("stroke", "red")
+			.attr("stroke-width", "3");
+	}
+
+	function drawWalkLine (y1, y2) {
+		d3.select("#timeline")
+			.append("line")
+			.attr("x1", 25)
+			.attr("y1", y1)
+			.attr("x2", 25)
+			.attr("y2", y2)
+			.attr("stroke", "red")
+			.attr("stroke-width", "3")
+			.attr("stroke-dasharray","5,5");
+	}
 });
 </script>
 </body>
