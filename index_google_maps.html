@@ -134,6 +134,8 @@ $(document).ready(function(){
 
 	var infowindow = new google.maps.InfoWindow();
 
+	var path;
+
 	// var articles = articles.article;
 	var bounds = new google.maps.LatLngBounds();
 	for (var i = 0; i < articles[0].article.length; i++) {
@@ -264,7 +266,7 @@ $(document).ready(function(){
 			// }
 		};
 
-		var path = new google.maps.Polyline({
+		path = new google.maps.Polyline({
 			path: newPositions,
 			geodesic: true,
 			//strokeColor: color[2],
@@ -274,6 +276,11 @@ $(document).ready(function(){
 		});
 
 		path.setMap(map);
+
+		google.maps.event.addListener(path, 'click', function() {
+			alert('ok');
+			console.log('Bounds changed.');
+		});
 
 	}
 
