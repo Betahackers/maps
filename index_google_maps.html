@@ -8,10 +8,16 @@
 	<script src="data3.json"></script>
 </head>
 <body>
-<div id="map" style="width: 800px; height: 400px;">
+<div id="map" style="width: 1000px; height: 600px;">
 </div>
 <script>
 $(document).ready(function(){
+
+	var colors = [
+		'#FF0000',
+		'#00FF00',
+		'#0000FF',
+	];
 
 	var container = document.getElementById('map');
 
@@ -129,10 +135,10 @@ $(document).ready(function(){
 	// var articles = articles.article;
 	for (var i = 0; i < articles[0].article.length; i++) {
 		var article = articles[0].article[i];
-		drawItinary(article);
+		drawItinary(article, colors[i]);
 	}
 
-	function drawItinary(article){
+	function drawItinary(article, color){
 
 		var mapLocations = article.locations;
 
@@ -203,13 +209,13 @@ $(document).ready(function(){
 		var path = new google.maps.Polyline({
 			path: positions,
 			geodesic: true,
-			strokeColor: '#FF0000',
+			strokeColor: color,
 			strokeOpacity: 1.0,
 			strokeWeight: 2
 		});
 		path.setMap(map);
 
-		drawItinaryLines(positions);
+		// drawItinaryLines(positions);
 
 		function showMapLocation(marker, i){
 			infowindow.setContent(mapLocations[i].html);
