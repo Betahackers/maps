@@ -167,7 +167,6 @@ $(document).ready(function(){
 	function drawItinary(article, color){
 
 		var mapLocations = article.locations;
-		console.log(color)
 
 		if(mapLocations.length == 0){
 			return;
@@ -275,7 +274,7 @@ $(document).ready(function(){
 
 	// Function to draw the timeline sidebar
 	function drawTimeline (mapLocations, color) {
-		console.log(mapLocations);
+		//console.log(mapLocations);
 
 		// Remove previous timeline and add new container
 		d3.select("#timeline").remove();
@@ -292,7 +291,7 @@ $(document).ready(function(){
 				totalTravelTime = totalTravelTime + key.travel_time;
 			}
     	} );
-		console.log(totalTravelTime);
+		//console.log(totalTravelTime);
 
 		// Draw lines corresponding to travel time
 		var locationCoordinates = [];
@@ -304,9 +303,9 @@ $(document).ready(function(){
 				locationCoordinates.push(destinationCoordinate);
 
 				if(key.travel_mode == "walking") {
-					drawWalkLine(xCoord, yCoord, xCoord, destinationCoordinate, color);
+					drawWalkLine(xCoord, yCoord, xCoord, destinationCoordinate, color, key.travel_time);
 				} else {
-					drawMetroLine(xCoord, yCoord, xCoord, destinationCoordinate, color);
+					drawMetroLine(xCoord, yCoord, xCoord, destinationCoordinate, color, key.travel_time);
 				}
 				yCoord = destinationCoordinate;
 			}
@@ -355,7 +354,7 @@ $(document).ready(function(){
 	}
 
 	// Function to draw a metro travel segment
-	function drawMetroLine (x1, y1, x2, y2, color) {
+	function drawMetroLine (x1, y1, x2, y2, color, time) {
 		d3.select("#timeline")
 			.append("line")
 			.attr("x1", x1)
@@ -364,10 +363,25 @@ $(document).ready(function(){
 			.attr("y2", y2)
 			.attr("stroke", color)
 			.attr("stroke-width", "3");
+		d3.select("#timeline")
+			.append("image")
+			.attr("xlink:href", "metro-train.svg")
+			.attr("x", x1+25)
+			.attr("y", (y1+y2)/2)
+			.attr("width", 20)
+			.attr("height", 20);
+		d3.select("#timeline")
+			.append("text")
+			.attr("x", x1+50)
+			.attr("y", (y1+y2)/2+13)
+			.attr("font-family", "sans-serif")
+			.attr("font-size","12px")
+			.attr("fill", "#888888")
+			.text(Math.round(time/60) + " minutes");
 	}
 
 	// Function to draw a walking segment
-	function drawWalkLine (x1, y1, x2, y2, color) {
+	function drawWalkLine (x1, y1, x2, y2, color, time) {
 		d3.select("#timeline")
 			.append("line")
 			.attr("x1", x1)
@@ -377,6 +391,22 @@ $(document).ready(function(){
 			.attr("stroke", color)
 			.attr("stroke-width", "3")
 			.attr("stroke-dasharray","5,5");
+		d3.select("#timeline")
+			.append("image")
+			.attr("xlink:href", "walking-man.svg")
+			.attr("x", x1+25)
+			.attr("y", (y1+y2)/2)
+			.attr("width", 20)
+			.attr("height", 20);
+		d3.select("#timeline")
+			.append("text")
+			.attr("x", x1+50)
+			.attr("y", (y1+y2)/2+13)
+			.attr("font-family", "sans-serif")
+			.attr("font-size","12px")
+			.attr("fill", "#888888")
+			.text(Math.round(time/60) + " minutes");
+
 	}
 });
 </script>
