@@ -233,6 +233,16 @@ $(document).ready(function(){
 			strokeWeight: 2
 		});
 		color_number = (color_number + 1) % 4;
+
+		google.maps.event.addListener(path, 'click', (function(path) {
+			return function() {
+				alert("Hi");
+				//showMapLocation(marker, i);
+				// infowindow.setContent(mapLocation.html);
+				// infowindow.open(map, marker);
+			}
+		})(path));
+
 		path.setMap(map);
 
 		//drawItinaryLines(positions);
