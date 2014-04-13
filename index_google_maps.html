@@ -11,18 +11,7 @@
 <body>
 <div id="map" style="width: 800px; height: 800px; float:left;"></div>
 <div id="sidebar" style="width: 150px; height: 800px; background-color:#DADAD8; float:left;">
-<svg id="timeline">
-<!-- 	<line x1="25" y1="25" x2="25" y2="200" stroke="red" stroke-width="3" />
-	<line x1="25" y1="200" x2="25" y2="300" stroke="red" stroke-width="3" stroke-dasharray="5,5"/>
-	<line x1="25" y1="300" x2="25" y2="475" stroke="red" stroke-width="3" />
-	<line x1="25" y1="475" x2="25" y2="600" stroke="red" stroke-width="3" />
-
-	<circle cx="25" cy="25" r="10" stroke="#EDEDED" stroke-width="6" fill="red" />
-	<circle cx="25" cy="200" r="10" stroke="#EDEDED" stroke-width="6" fill="red" />
-	<circle cx="25" cy="300" r="10" stroke="#EDEDED" stroke-width="6" fill="red" />
-	<circle cx="25" cy="475" r="10" stroke="#EDEDED" stroke-width="6" fill="red" />
-	<circle cx="25" cy="600" r="10" stroke="#EDEDED" stroke-width="6" fill="red" /> -->
-</svg>
+<svg id="timeline"></svg>
 </div>
 <script>
 $(document).ready(function(){
@@ -147,11 +136,9 @@ $(document).ready(function(){
 	]);
 
 	var infowindow = new google.maps.InfoWindow();
-
 	var path;
-
-	// var articles = articles.article;
 	var bounds = new google.maps.LatLngBounds();
+
 	for (var i = 0; i < articles[0].article.length; i++) {
 		var article = articles[0].article[i];
 		drawItinary(article, colors[article.id]);
@@ -162,8 +149,6 @@ $(document).ready(function(){
 	}
 
 	// Draw the timeline in the sidebar
-
-
 	function drawItinary(article, color){
 
 		var mapLocations = article.locations;
@@ -196,33 +181,15 @@ $(document).ready(function(){
 				}
 			};
 			positions.push(pos);
-			// console.log(mapLocation);
-
-
-			// var pinColor = mapLocation.color;
-			// var iconUrl = "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=" + mapLocation.num;
-			// if (mapLocation.color){
-			// 	iconUrl += "|" + pinColor;
-			// }
-			// props.icon = new google.maps.MarkerImage(iconUrl,
-			// 	new google.maps.Size(21, 34),
-			// 	new google.maps.Point(0,0),
-			// 	new google.maps.Point(10, 34));
-			// props.shadow = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
-			// 	new google.maps.Size(40, 37),
-			// 	new google.maps.Point(0, 0),
-			// 	new google.maps.Point(12, 35));
 
 			mapLocation.marker = new google.maps.Marker(props);
 			google.maps.event.addListener(mapLocation.marker, 'click', (function(marker, i) {
 				return function() {
 					showMapLocation(marker, i);
-					// infowindow.setContent(mapLocation.html);
-					// infowindow.open(map, marker);
 				}
 			})(mapLocation.marker, i));
-			// console.log(mapLocation);
 
+			// Extend bounds of map to include all locations
 			bounds.extend(mapLocation.marker.position);
 
 		}
@@ -239,13 +206,10 @@ $(document).ready(function(){
 			strokeWeight: 2
 		});
 
+		// Add listener to each itinerary to draw the timeline on click
 		google.maps.event.addListener(path, 'click', (function(path) {
 			return function() {
 				drawTimeline(mapLocations, color)
-				//alert("Hi" + mapLocations[0].name);
-				//showMapLocation(marker, i);
-				// infowindow.setContent(mapLocation.html);
-				// infowindow.open(map, marker);
 			}
 		})(path, i));
 
@@ -264,6 +228,7 @@ $(document).ready(function(){
 
 		var newPositions = [];
 
+		// Calculate the location positions from coordinates.
 		for (var i = 0; i < positions.length - 1; i++) {
 			var current = positions[i];
 			var next = positions[i+1];
@@ -290,6 +255,7 @@ $(document).ready(function(){
 
 	}
 
+	// Function to draw the timeline sidebar
 	function drawTimeline (mapLocations, color) {
 		console.log(mapLocations);
 
@@ -310,7 +276,7 @@ $(document).ready(function(){
     	} );
 		console.log(totalTravelTime);
 
-		// Draw lines
+		// Draw lines corresponding to travel time
 		var locationCoordinates = [];
 		locationCoordinates.push(yCoord);
 
@@ -329,12 +295,14 @@ $(document).ready(function(){
 
 		} );
 
-		// Draw locations
+		// Draw locations in itinerary.
 		console.log(locationCoordinates);
 		locationCoordinates.forEach( function( key, val ) {
 			drawLocation(xCoord, key, color);
 		} );
 	}
+
+	// Function to draw one location in the sidebar timeline
 	function drawLocation (x, y, color) {
 		d3.select("#timeline")
 			.append("circle")
@@ -346,6 +314,7 @@ $(document).ready(function(){
 			.attr("fill", color);
 	}
 
+	// Function to draw a metro travel segment
 	function drawMetroLine (x1, y1, x2, y2, color) {
 		d3.select("#timeline")
 			.append("line")
@@ -357,6 +326,7 @@ $(document).ready(function(){
 			.attr("stroke-width", "3");
 	}
 
+	// Function to draw a walking segment
 	function drawWalkLine (x1, y1, x2, y2, color) {
 		d3.select("#timeline")
 			.append("line")
