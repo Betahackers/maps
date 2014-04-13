@@ -151,10 +151,10 @@ $(document).ready(function(){
 	var bounds = new google.maps.LatLngBounds();
 	for (var i = 0; i < articles[0].article.length; i++) {
 		var article = articles[0].article[i];
-		drawItinary(article);
+		drawItinary(article, colors[i]);
 	}
 
-	function drawItinary(article){
+	function drawItinary(article, color){
 
 		var mapLocations = article.locations;
 
@@ -223,6 +223,7 @@ $(document).ready(function(){
 		var path = new google.maps.Polyline({
 			path: positions,
 			geodesic: true,
+			strokeColor: color,
 			strokeColor: colors[color_number],
 			strokeOpacity: 1.0,
 			strokeWeight: 2
