@@ -9,7 +9,20 @@
 </head>
 <body>
 <div id="map" style="width: 800px; height: 800px; float:left;"></div>
-<div id="sidebar" style="width: 150px; height: 800px; background-color:#00ff00; float:left;"></div>
+<div id="sidebar" style="width: 150px; height: 800px; background-color:#DADAD8; float:left;">
+<svg>
+	<line x1="25" y1="25" x2="25" y2="200" stroke="red" stroke-width="3" />
+	<line x1="25" y1="200" x2="25" y2="300" stroke="red" stroke-width="3" stroke-dasharray="5,5"/>
+	<line x1="25" y1="300" x2="25" y2="475" stroke="red" stroke-width="3" />
+	<line x1="25" y1="475" x2="25" y2="600" stroke="red" stroke-width="3" />
+
+	<circle cx="25" cy="25" r="10" stroke="#EDEDED" stroke-width="6" fill="red" />
+	<circle cx="25" cy="200" r="10" stroke="#EDEDED" stroke-width="6" fill="red" />
+	<circle cx="25" cy="300" r="10" stroke="#EDEDED" stroke-width="6" fill="red" />
+	<circle cx="25" cy="475" r="10" stroke="#EDEDED" stroke-width="6" fill="red" />
+	<circle cx="25" cy="600" r="10" stroke="#EDEDED" stroke-width="6" fill="red" />
+</svg>
+</div>
 <script>
 $(document).ready(function(){
 
