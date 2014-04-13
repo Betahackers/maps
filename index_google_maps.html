@@ -236,12 +236,13 @@ $(document).ready(function(){
 
 		google.maps.event.addListener(path, 'click', (function(path) {
 			return function() {
-				alert("Hi");
+				console.log(mapLocations)
+				alert("Hi" + mapLocations[0].name);
 				//showMapLocation(marker, i);
 				// infowindow.setContent(mapLocation.html);
 				// infowindow.open(map, marker);
 			}
-		})(path));
+		})(path, i));
 
 		path.setMap(map);
 
