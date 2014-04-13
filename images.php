@@ -6,9 +6,9 @@ $data = json_decode($json);
 foreach ($data->article as $article) {
 	$locations = $article->locations;
 	foreach ($locations as $location) { 
-		if ($location->image) {
-			continue;
-		}
+		// if ($location->image) {
+		// 	continue;
+		// }
 		print $location->name . PHP_EOL;
 		$image = getImage($location);
 		sleep(60);
